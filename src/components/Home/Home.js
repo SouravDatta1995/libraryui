@@ -1,25 +1,43 @@
-import React from 'react';
-import { Row} from "react-bootstrap"
+import {useState, useEffect} from 'react';
+import {Row} from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
-import Book from "./Book";
+import BookCard from "../Book/BookCard";
 import NavbarComp from "../NavbarComp/NavbarComp";
+import axios from "axios";
 
 function Home(props) {
 
-    let books = [
-        {id: 1, title: "Test", author: "Test"},
-        {id: 2, title: "Test", author: "Test"},
-        {id: 3, title: "Test", author: "Test"},
-        {id: 4, title: "Test", author: "Test"},
-        {id: 5, title: "Test", author: "Test"},
-    ]
+    const defBook = {
+        title: "",
+        author: "",
+        price: 0,
+        count: 0
+    }
+    const [bookList, setBookList] = useState([defBook]);
+
+    useEffect(() => {
+        fetchAllBook()
+    }, []);
+
+    const fetchAllBook = () => {
+        axios.get("http://localhost:8080/api/books/").then(
+            res => {
+                console.log(res)
+                setBookList(res.data)
+            }
+        ).catch(
+            error => {
+                //TODO: Error Page
+            }
+        )
+    }
 
     return (
         <div>
             <NavbarComp/>
             <div className={"container-fluid"}>
-                <Row className={"row-cols-4"}>
-                    {books.map(book => <Book title={book.title} author={book.author}/>)}
+                <Row className={"row-cols-3"}>
+                    {bookList.map(book => <BookCard key={book.id} book={book}/>)}
                 </Row>
             </div>
         </div>
