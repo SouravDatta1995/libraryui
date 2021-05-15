@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {Row} from "react-bootstrap"
+import {Container, Row} from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import BookCard from "../Book/BookCard";
 import NavbarComp from "../NavbarComp/NavbarComp";
@@ -8,6 +8,7 @@ import axios from "axios";
 function Home(props) {
 
     const defBook = {
+        id: 0,
         title: "",
         author: "",
         price: 0,
@@ -20,9 +21,8 @@ function Home(props) {
     }, []);
 
     const fetchAllBook = () => {
-        axios.get("http://localhost:8080/api/books/").then(
+        axios.get("https://spoilerlibrarybackend.herokuapp.com/api/books/").then(
             res => {
-                console.log(res)
                 setBookList(res.data)
             }
         ).catch(
@@ -35,11 +35,11 @@ function Home(props) {
     return (
         <div>
             <NavbarComp/>
-            <div className={"container-fluid"}>
+            <Container fluid>
                 <Row className={"row-cols-3"}>
                     {bookList.map(book => <BookCard key={book.id} book={book}/>)}
                 </Row>
-            </div>
+            </Container>
         </div>
     );
 }

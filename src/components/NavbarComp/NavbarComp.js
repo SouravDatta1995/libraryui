@@ -1,30 +1,37 @@
-import React from 'react';
-import {Button, Col, InputGroup, Navbar} from "react-bootstrap";
+import React, {useState} from 'react';
+import {Button, Col, Container, InputGroup, Navbar} from "react-bootstrap";
 import {useHistory} from 'react-router-dom'
+import NewBookModal from "../Book/NewBookModal";
 
 function NavbarComp() {
     const history = useHistory();
-    const logout = () =>{
+    const [modalState, setModalState] = useState(false);
+    const logout = () => {
         history.push("/");
     }
+    const openModal = () => setModalState(true)
+    const closeModal = () => setModalState(false)
 
     return (
-        <Navbar className={"navbar navbar-expand-lg navbar-dark bg-dark mb-3 p-3"}>
-            <div className={"container-fluid"}>
-                <Col>
-                    <a className="navbar-brand" href="/home">Home</a>
-                </Col>
-                <Col className={"col-4"}>
-                    <InputGroup>
-                        <Button className={"btn-success"}>Add New Book</Button>
-                        <input className={"form-control"} type={"search"} placeholder="Search"/>
-                        <Button className={"btn-success me-3"}>Search</Button>
-                        <Button className={"btn-danger"} onClick={logout}>Logout</Button>
-                    </InputGroup>
+        <React.Fragment>
+            <Navbar variant={"dark"} bg={"dark"} className={"mb-3 p-3"}>
+                <Container fluid>
+                    <Col>
+                        <Navbar.Brand href="/home">Home</Navbar.Brand>
+                    </Col>
+                    <Col className={"col-4"}>
+                        <InputGroup>
+                            <Button variant={"success"} onClick={openModal}>Add New Book</Button>
+                            <input className={"form-control"} type={"search"} placeholder="Search"/>
+                            <Button variant={"success"} className={"me-3"}>Search</Button>
+                            <Button variant={"danger"} onClick={logout}>Logout</Button>
+                        </InputGroup>
 
-                </Col>
-            </div>
-        </Navbar>
+                    </Col>
+                </Container>
+            </Navbar>
+            <NewBookModal showBookModal={modalState} closeModal={closeModal}/>
+        </React.Fragment>
     );
 }
 
