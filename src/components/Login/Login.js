@@ -1,19 +1,16 @@
 import React, {useState} from "react";
-import {Button, Form} from "react-bootstrap"
-import "bootstrap/dist/css/bootstrap.min.css"
-import {useHistory} from "react-router-dom";
+import {Button, ButtonGroup, Form, InputGroup} from "react-bootstrap"
 import axios from "axios";
 
-function Login() {
+function Login(props) {
 
     const [credentials, setCredentials] = useState({username: "", password: ""})
-    const history = useHistory();
     const loginHandler = e => {
         e.preventDefault()
         axios.post("https://spoilerlibrarybackend.herokuapp.com/api/login/", credentials)
             .then(res => {
                 if (res.data === true)
-                    history.push("/home")
+                    props.setCredentials(credentials)
                 else
                     alert("Invalid username or password")
             })
@@ -32,7 +29,11 @@ function Login() {
                 <Form.Control type="password" placeholder="Enter password" className={"mb-4"}
                               value={credentials.password}
                               onChange={e => setCredentials({...credentials, password: e.target.value})}/>
-                <Button type={"submit"} className={"mb-4"}> Login </Button>
+                <Form.Row>
+                    <Button type={"submit"}> Login </Button>  or  <Button> Signup </Button>
+                </Form.Row>
+
+
             </Form>
         </div>
     );
